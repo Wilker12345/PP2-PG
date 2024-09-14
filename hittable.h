@@ -1,7 +1,7 @@
 #ifndef HITTABLE_H
 #define HITTABLE_H
 
-#include <rtweekend.h>
+#include "rtweekend.h"
 /*
 Essa classe "hittable" é a classe que diz o que o raio pode bater ou não. Se a gente quer criar uma esfera que seja batível, então a gente cria uma classe esfera e
 faz ela herdar as característica dessa classe "hittable"
