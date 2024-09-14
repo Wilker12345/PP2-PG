@@ -1,8 +1,8 @@
-Criar diretório build
+Criar diretório build:
 mkdir build
 
 
-Acessar diretório build
+Acessar diretório build:
 cd build
 
 
@@ -14,6 +14,6 @@ Compilar projeto:
 cmake --build .
 
 
-Executar projeto
+Executar projeto:
 ./pp2
 
