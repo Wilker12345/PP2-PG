@@ -1,3 +1,0 @@
-"C:\Users\Wilker Ribeiro\Downloads\cmake-3.30.3-windows-x86_64\bin\cmake.exe" -E rm -f CMakeFiles\projeto_pratico2.dir/objects.a
-C:\MinGW\bin\ar.exe qc CMakeFiles\projeto_pratico2.dir/objects.a @CMakeFiles\projeto_pratico2.dir\objects1.rsp
-C:\MinGW\bin\c++.exe -Wl,--whole-archive CMakeFiles\projeto_pratico2.dir/objects.a -Wl,--no-whole-archive -o projeto_pratico2.exe -Wl,--out-implib,libprojeto_pratico2.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\projeto_pratico2.dir\linkLibs.rsp

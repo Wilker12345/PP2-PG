@@ -1,6 +1,13 @@
-cmake_minimum_required(VERSION 3.30.3)
+cmake_minimum_required(VERSION 3.10)
 
-project(projeto_pratico2)
+# Defina o nome do projeto
+project(pp2)
 
-add_executable(projeto_pratico2 pp2.cpp)
+# Especificar o padrão de C++ (C++11, C++14, etc.)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+# Adicionar o executável
+add_executable(pp2
+    src/main.cc
+)
