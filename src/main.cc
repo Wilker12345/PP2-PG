@@ -67,7 +67,7 @@ int main() {
     auto material_ground = make_shared<lambertian>(color(0.8, 0.8, 0.8));
     auto material_center = make_shared<lambertian>(color(1, 1, 1));
     auto material_top = make_shared<lambertian>(color(1, 1, 1));
-    auto material_head = make_shared<metal>(color(1, 1, 1), 1.0);
+    auto material_head = make_shared<metal>(color(1, 1, 1), 1);
     auto material_eye = make_shared<metal>(color(0, 0, 0), 1.0);
     auto material_nose = make_shared<lambertian>(color(1, 0.45, 0));
     auto material_mouth = make_shared<lambertian>(color(0, 0, 0));
@@ -82,8 +82,8 @@ int main() {
     camera cam;
 
     cam.aspect_ratio      = 16.0 / 9.0;
-    cam.image_width       = 400;
-    cam.samples_per_pixel = 100;
+    cam.image_width       = 1200;
+    cam.samples_per_pixel = 500;
     cam.max_depth         = 50;
 
     cam.vfov = 90;
@@ -92,10 +92,10 @@ int main() {
     // IMAGEM 1
 
 
-    world.add(make_shared<sphere>(point3( 0.0, -100.5, -1.0), 98.0, material_ground)); //faz a bola do chão. O mundo
+    world.add(make_shared<sphere>(point3( 0.0, -100.5, -1.0), 100.0, material_ground)); //faz a bola do chão. O mundo
     world.add(make_shared<sphere>(point3( 0.0,    0.0, -1.0),   0.8, material_center)); //faz a bola do meio.
     world.add(make_shared<sphere>(point3(0.0,    1.1, -1.0),   0.5, material_top));
-    world.add(make_shared<sphere>(point3(0.0,    1.95, -1.0),   0.35, material_head));
+    world.add(make_shared<sphere>(point3(0.0,    1.90, -1.0),   0.35, material_head));
 
     world.add(make_shared<sphere>(point3(-0.1, 1.8, -0.5), 0.05, material_eye));
     world.add(make_shared<sphere>(point3(0.1, 1.8, -0.5), 0.05, material_eye));
@@ -187,7 +187,7 @@ int main() {
 
     int translacao = 2;
 
-    world.add(make_shared<sphere>(point3(translacao + 0.0, -100.5, -1.0), 98.0, material_ground)); //faz a bola do chão. O mundo
+    world.add(make_shared<sphere>(point3(translacao + 0.0, -100.5, -1.0), 100.0, material_ground)); //faz a bola do chão. O mundo
     world.add(make_shared<sphere>(point3(translacao + 0.0,    0.0, -1.0),   0.8, material_center)); //faz a bola do meio.
     world.add(make_shared<sphere>(point3(translacao + 0.0,    1.1, -1.0),   0.5, material_top));
     world.add(make_shared<sphere>(point3(translacao + 0.0,    1.9, -1.0),   0.35, material_head));

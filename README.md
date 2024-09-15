@@ -1,19 +1,16 @@
-Criar diretório build:
-mkdir build
+## Passos para Compilação e Execução
 
+**Criar o diretório de build:**
+```mkdir build ```
 
-Acessar diretório build:
-cd build
+**Acessar diretório build:**
+```cd build```
 
+**Gerar arquivos de compilação:**
+```cmake ..```
 
-Gerar arquivos de compilação:
-cmake ..
+**Compilar projeto:**
+```cmake --build .```
 
-
-Compilar projeto:
-cmake --build .
-
-
-Executar projeto:
-./pp2
-
+**Executar projeto:**
+```./pp2```
