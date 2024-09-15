@@ -42,31 +42,14 @@ double hit_sphere(const point3& center, double radius, const ray& r) {
     }
 } 
 
-// color ray_color(const ray& r, const hittable& world) {
-//     hit_record rec;
-//     if (world.hit(r, interval(0, infinity), rec)) {
-//         return 0.5 * (rec.normal + color(1,1,1));
-//     }
-
-//     vec3 unit_direction = unit_vector(r.direction());
-//     auto a = 0.5*(unit_direction.y() + 1.0);
-//     return (1.0-a)*color(1.0, 1.0, 1.0) + a*color(0.5, 0.7, 1.0);
-// }
 
 int main() {
     hittable_list world;
 
-    // auto material_ground = make_shared<lambertian>(color(0.8, 0.8, 0.0));
-    // auto material_head = make_shared<lambertian>(color(0.1, 0.2, 0.5));
-    // // auto material_upperBody   = make_shared<dielectric>(1.50);
-    // auto material_lowerBody = make_shared<dielectric>(1.00 / 1.50);
-    // auto material_right  = make_shared<metal>(color(0.8, 0.6, 0.2), 1.0);
-
-
 
     auto material_ground = make_shared<lambertian>(color(0.8, 0.8, 0.8));
-    auto material_center = make_shared<lambertian>(color(1, 1, 1));
-    auto material_top = make_shared<lambertian>(color(1, 1, 1));
+    auto material_lower = make_shared<metal>(color(1, 1, 1), 0.0);
+    auto material_upper = make_shared<lambertian>(color(1, 1, 1));
     auto material_head = make_shared<metal>(color(1, 1, 1), 1);
     auto material_eye = make_shared<metal>(color(0, 0, 0), 1.0);
     auto material_nose = make_shared<lambertian>(color(1, 0.45, 0));
@@ -79,11 +62,16 @@ int main() {
     auto material_arm = make_shared<lambertian>(color(1, 1, 1));
 
 
+    auto material_ballA = make_shared<lambertian>(color(1, 0, 1));
+    auto material_ballB = make_shared<lambertian>(color(0.56, 0, 1));
+    auto material_ballC = make_shared<lambertian>(color(0, 1, 1));
+
+
     camera cam;
 
     cam.aspect_ratio      = 16.0 / 9.0;
-    cam.image_width       = 1200;
-    cam.samples_per_pixel = 500;
+    cam.image_width       = 400;
+    cam.samples_per_pixel = 100;
     cam.max_depth         = 50;
 
     cam.vfov = 90;
@@ -91,155 +79,182 @@ int main() {
     ///////////////////////////////////////////////////////////////////////////////////////
     // IMAGEM 1
 
+    world.add(make_shared<sphere>(point3( 0.0, -100.5, -2.0), 100.0, material_ground)); //esfera que representa mundo
+    world.add(make_shared<sphere>(point3( 0.0,    0.0, -2.0),   0.8, material_lower)); //primeira esfera do boneco.
+    world.add(make_shared<sphere>(point3(0.0,    1.1, -2.0),   0.5, material_upper)); //segunda esfera do boneco 
+    world.add(make_shared<sphere>(point3(0.0,    1.90, -2.0),   0.35, material_head));//cabeça do boneco
 
-    world.add(make_shared<sphere>(point3( 0.0, -100.5, -1.0), 100.0, material_ground)); //faz a bola do chão. O mundo
-    world.add(make_shared<sphere>(point3( 0.0,    0.0, -1.0),   0.8, material_center)); //faz a bola do meio.
-    world.add(make_shared<sphere>(point3(0.0,    1.1, -1.0),   0.5, material_top));
-    world.add(make_shared<sphere>(point3(0.0,    1.90, -1.0),   0.35, material_head));
-
-    world.add(make_shared<sphere>(point3(-0.1, 1.8, -0.5), 0.05, material_eye));
-    world.add(make_shared<sphere>(point3(0.1, 1.8, -0.5), 0.05, material_eye));
-    world.add(make_shared<sphere>(point3(0.0, 1.7, -0.5), 0.03, material_nose));
-    
-    world.add(make_shared<sphere>(point3(-0.10, 1.60, -0.5), 0.01, material_mouth));
-    world.add(make_shared<sphere>(point3(-0.09, 1.59, -0.5), 0.01, material_mouth));
-    world.add(make_shared<sphere>(point3(-0.08, 1.59, -0.5), 0.01, material_mouth));
-    world.add(make_shared<sphere>(point3(-0.07, 1.58, -0.5), 0.01, material_mouth));
-    world.add(make_shared<sphere>(point3(-0.06, 1.58, -0.5), 0.01, material_mouth));
-    world.add(make_shared<sphere>(point3(-0.05, 1.57, -0.5), 0.01, material_mouth));
-    world.add(make_shared<sphere>(point3(-0.04, 1.57, -0.5), 0.01, material_mouth));
-    world.add(make_shared<sphere>(point3(-0.03, 1.56, -0.5), 0.01, material_mouth));
-    world.add(make_shared<sphere>(point3(-0.02, 1.56, -0.5), 0.01, material_mouth));
-    
-    world.add(make_shared<sphere>(point3(-0.01, 1.55, -0.5), 0.01, material_mouth));
-    world.add(make_shared<sphere>(point3(0, 1.55, -0.5), 0.01, material_mouth));
-    world.add(make_shared<sphere>(point3(0.01, 1.55, -0.5), 0.01, material_mouth));
-
-    world.add(make_shared<sphere>(point3(0.02, 1.56, -0.5), 0.01, material_mouth));
-    world.add(make_shared<sphere>(point3(0.03, 1.56, -0.5), 0.01, material_mouth));
-    world.add(make_shared<sphere>(point3(0.04, 1.57, -0.5), 0.01, material_mouth));
-    world.add(make_shared<sphere>(point3(0.05, 1.57, -0.5), 0.01, material_mouth));
-    world.add(make_shared<sphere>(point3(0.06, 1.58, -0.5), 0.01, material_mouth));
-    world.add(make_shared<sphere>(point3(0.07, 1.58, -0.5), 0.01, material_mouth));
-    world.add(make_shared<sphere>(point3(0.08, 1.59, -0.5), 0.01, material_mouth));
-    world.add(make_shared<sphere>(point3(0.09, 1.59, -0.5), 0.01, material_mouth));
-    world.add(make_shared<sphere>(point3(0.10, 1.60, -0.5), 0.01, material_mouth));
-
-
-
-
-    world.add(make_shared<sphere>(point3(0.0, 1.3, -0.5), 0.03, material_buttons));
-    world.add(make_shared<sphere>(point3(0.0, 1.15, -0.5), 0.03, material_buttons));
-    world.add(make_shared<sphere>(point3(0.0, 1, -0.5), 0.03, material_buttons));
-
-    world.add(make_shared<sphere>(point3(-0.55, 1.4, -1.0), 0.15, material_shoulder));
-    world.add(make_shared<sphere>(point3(0.55, 1.4, -1.0), 0.15, material_shoulder));
-
-    world.add(make_shared<sphere>(point3(-0.75, 1.3, -1.0), 0.10, material_biceps));
-    world.add(make_shared<sphere>(point3(0.75, 1.3, -1.0), 0.10, material_biceps));
-
-    world.add(make_shared<sphere>(point3(-0.88, 1.25, -1.0), 0.08, material_arm));
-    world.add(make_shared<sphere>(point3(0.88, 1.25, -1.0), 0.08, material_arm));
+    // olhos e naris do boneco
+    world.add(make_shared<sphere>(point3(-0.1, 1.8, -1.5), 0.05, material_eye));
+    world.add(make_shared<sphere>(point3(0.1, 1.8, -1.5), 0.05, material_eye));
+    world.add(make_shared<sphere>(point3(0.0, 1.7, -1.5), 0.03, material_nose));
 
     
+    // boca do boneco
+    world.add(make_shared<sphere>(point3(-0.10, 1.60, -1.5), 0.01, material_mouth));
+    world.add(make_shared<sphere>(point3(-0.09, 1.59, -1.5), 0.01, material_mouth));
+    world.add(make_shared<sphere>(point3(-0.08, 1.59, -1.5), 0.01, material_mouth));
+    world.add(make_shared<sphere>(point3(-0.07, 1.58, -1.5), 0.01, material_mouth));
+    world.add(make_shared<sphere>(point3(-0.06, 1.58, -1.5), 0.01, material_mouth));
+    world.add(make_shared<sphere>(point3(-0.05, 1.57, -1.5), 0.01, material_mouth));
+    world.add(make_shared<sphere>(point3(-0.04, 1.57, -1.5), 0.01, material_mouth));
+    world.add(make_shared<sphere>(point3(-0.03, 1.56, -1.5), 0.01, material_mouth));
+    world.add(make_shared<sphere>(point3(-0.02, 1.56, -1.5), 0.01, material_mouth));
+    
+    world.add(make_shared<sphere>(point3(-0.01, 1.55, -1.5), 0.01, material_mouth));
+    world.add(make_shared<sphere>(point3(0, 1.55, -1.5), 0.01, material_mouth));
+    world.add(make_shared<sphere>(point3(0.01, 1.55, -1.5), 0.01, material_mouth));
 
-    // cam.focus_dist = 10;
+    world.add(make_shared<sphere>(point3(0.02, 1.56, -1.5), 0.01, material_mouth));
+    world.add(make_shared<sphere>(point3(0.03, 1.56, -1.5), 0.01, material_mouth));
+    world.add(make_shared<sphere>(point3(0.04, 1.57, -1.5), 0.01, material_mouth));
+    world.add(make_shared<sphere>(point3(0.05, 1.57, -1.5), 0.01, material_mouth));
+    world.add(make_shared<sphere>(point3(0.06, 1.58, -1.5), 0.01, material_mouth));
+    world.add(make_shared<sphere>(point3(0.07, 1.58, -1.5), 0.01, material_mouth));
+    world.add(make_shared<sphere>(point3(0.08, 1.59, -1.5), 0.01, material_mouth));
+    world.add(make_shared<sphere>(point3(0.09, 1.59, -1.5), 0.01, material_mouth));
+    world.add(make_shared<sphere>(point3(0.10, 1.60, -1.5), 0.01, material_mouth));
 
+
+
+    // botões do boneco
+    world.add(make_shared<sphere>(point3(0.0, 1.3, -1.5), 0.03, material_buttons));
+    world.add(make_shared<sphere>(point3(0.0, 1.15, -1.5), 0.03, material_buttons));
+    world.add(make_shared<sphere>(point3(0.0, 1, -1.5), 0.03, material_buttons));
+
+    // braços do boneco
+    world.add(make_shared<sphere>(point3(-0.55, 1.4, -2.0), 0.15, material_shoulder));
+    world.add(make_shared<sphere>(point3(0.55, 1.4, -2.0), 0.15, material_shoulder));
+    world.add(make_shared<sphere>(point3(-0.75, 1.3, -2.0), 0.10, material_biceps));
+    world.add(make_shared<sphere>(point3(0.75, 1.3, -2.0), 0.10, material_biceps));
+    world.add(make_shared<sphere>(point3(-0.88, 1.25, -2.0), 0.08, material_arm));
+    world.add(make_shared<sphere>(point3(0.88, 1.25, -2.0), 0.08, material_arm));
+
+    srand(42);
+
+    // inserie mais esferas na imagem
+    for (int a = -3; a < 3; a++) {
+        for (int b = -3; b < 1; b++) {
+            auto choose_mat = random_double();
+            point3 center(a + 0.5*random_double(), 0, b - 0.5*random_double());
+
+            if ((center - point3(0, 0, -2)).length() > 1.2) {
+                shared_ptr<material> sphere_material;
+
+                if (choose_mat < 0.8) {
+                    // diffuse
+                    auto albedo = color::random() * color::random();
+                    sphere_material = make_shared<lambertian>(albedo);
+                    world.add(make_shared<sphere>(center, 0.2, sphere_material));
+                } else if (choose_mat < 0.95) {
+                    // metal
+                    auto albedo = color::random(0.5, 1);
+                    auto fuzz = random_double(0, 0.5);
+                    sphere_material = make_shared<metal>(albedo, fuzz);
+                    world.add(make_shared<sphere>(center, 0.2, sphere_material));
+                } else {
+                    // glass
+                    sphere_material = make_shared<dielectric>(1.5);
+                    world.add(make_shared<sphere>(center, 0.2, sphere_material));
+                }
+            }
+        }
+    }
+    
     cam.lookfrom = point3(0,1,1.18);
     cam.lookat   = point3(0,1,-1);
     cam.vup      = vec3(0,1,0);
-    // cam.vfov     = 90;
-    // cam.lookfrom = point3(-2,2,1);
-    // cam.lookat   = point3(0,0,-1);
-    // cam.vup      = vec3(0,1,0);
 
     cam.render(world, "image1.ppm");
-
 
     ///////////////////////////////////////////////////////////////////////////////////////
 
      world.clear();
     // IMAGEM 2
 
-   
+    int deslocamento = 2;
 
+    world.add(make_shared<sphere>(point3( 0.0, -100.5, -2.0), 100.0, material_ground)); //esfera que representa mundo
+    world.add(make_shared<sphere>(point3( 0.0,    0.0, -2.0),   0.8, material_lower)); //primeira esfera do boneco.
+    world.add(make_shared<sphere>(point3(0.0,    1.1, -2.0),   0.5, material_upper)); //segunda esfera do boneco 
+    world.add(make_shared<sphere>(point3(0.0,    1.90, -2.0),   0.35, material_head)); //cabeça do boneco
 
-    // world.add(make_shared<sphere>(point3( 2, -100.5, -1.0), 98.0, material_ground)); //faz a bola do chão. O mundo
-    // world.add(make_shared<sphere>(point3( 2,    0.0, -1.0),   0.8, material_center)); //faz a bola do meio.
-    // world.add(make_shared<sphere>(point3(2,    1.1, -1.0),   0.5, material_top));
-    // world.add(make_shared<sphere>(point3(2,    1.8, -1.0),   0.25, material_head));
+    world.add(make_shared<sphere>(point3(-0.1, 1.8, -1.5), 0.05, material_eye));
+    world.add(make_shared<sphere>(point3(0.1, 1.8, -1.5), 0.05, material_eye));
+    world.add(make_shared<sphere>(point3(0.0, 1.7, -1.5), 0.03, material_nose));
 
-    // world.add(make_shared<sphere>(point3(1.5, 1.7, -0.5), 0.05, material_eye));
-    // world.add(make_shared<sphere>(point3(1.7, 1.7, -0.5), 0.05, material_eye));
-
-    // world.add(make_shared<sphere>(point3(2, 1.5, -0.5), 0.05, material_nose));
-
-
-
-    // world.add(make_shared<sphere>(point3(1.45, 1.4, -1.0), 0.15, material_shoulder));
-    // world.add(make_shared<sphere>(point3(2.55, 1.4, -1.0), 0.15, material_shoulder));
-
-    // world.add(make_shared<sphere>(point3(1.25, 1.5, -1.0), 0.10, material_biceps));
-    // world.add(make_shared<sphere>(point3(2.75, 1.5, -1.0), 0.10, material_biceps));
-
-    // world.add(make_shared<sphere>(point3(1.12, 1.55, -1.0), 0.08, material_arm));
-    // world.add(make_shared<sphere>(point3(2.88, 1.55, -1.0), 0.08, material_arm));
-
-    int translacao = 2;
-
-    world.add(make_shared<sphere>(point3(translacao + 0.0, -100.5, -1.0), 100.0, material_ground)); //faz a bola do chão. O mundo
-    world.add(make_shared<sphere>(point3(translacao + 0.0,    0.0, -1.0),   0.8, material_center)); //faz a bola do meio.
-    world.add(make_shared<sphere>(point3(translacao + 0.0,    1.1, -1.0),   0.5, material_top));
-    world.add(make_shared<sphere>(point3(translacao + 0.0,    1.9, -1.0),   0.35, material_head));
-
-    world.add(make_shared<sphere>(point3(translacao + -0.1, 1.8, -0.5), 0.05, material_eye));
-    world.add(make_shared<sphere>(point3(translacao + 0.1, 1.8, -0.5), 0.05, material_eye));
-    world.add(make_shared<sphere>(point3(translacao + 0.0, 1.7, -0.5), 0.03, material_nose));
     
-    world.add(make_shared<sphere>(point3(translacao + -0.10, 1.60, -0.5), 0.01, material_mouth));
-    world.add(make_shared<sphere>(point3(translacao + -0.09, 1.59, -0.5), 0.01, material_mouth));
-    world.add(make_shared<sphere>(point3(translacao + -0.08, 1.59, -0.5), 0.01, material_mouth));
-    world.add(make_shared<sphere>(point3(translacao + -0.07, 1.58, -0.5), 0.01, material_mouth));
-    world.add(make_shared<sphere>(point3(translacao + -0.06, 1.58, -0.5), 0.01, material_mouth));
-    world.add(make_shared<sphere>(point3(translacao + -0.05, 1.57, -0.5), 0.01, material_mouth));
-    world.add(make_shared<sphere>(point3(translacao + -0.04, 1.57, -0.5), 0.01, material_mouth));
-    world.add(make_shared<sphere>(point3(translacao + -0.03, 1.56, -0.5), 0.01, material_mouth));
-    world.add(make_shared<sphere>(point3(translacao + -0.02, 1.56, -0.5), 0.01, material_mouth));
+    world.add(make_shared<sphere>(point3(-0.10, 1.60, -1.5), 0.01, material_mouth));
+    world.add(make_shared<sphere>(point3(-0.09, 1.59, -1.5), 0.01, material_mouth));
+    world.add(make_shared<sphere>(point3(-0.08, 1.59, -1.5), 0.01, material_mouth));
+    world.add(make_shared<sphere>(point3(-0.07, 1.58, -1.5), 0.01, material_mouth));
+    world.add(make_shared<sphere>(point3(-0.06, 1.58, -1.5), 0.01, material_mouth));
+    world.add(make_shared<sphere>(point3(-0.05, 1.57, -1.5), 0.01, material_mouth));
+    world.add(make_shared<sphere>(point3(-0.04, 1.57, -1.5), 0.01, material_mouth));
+    world.add(make_shared<sphere>(point3(-0.03, 1.56, -1.5), 0.01, material_mouth));
+    world.add(make_shared<sphere>(point3(-0.02, 1.56, -1.5), 0.01, material_mouth));
     
-    world.add(make_shared<sphere>(point3(translacao + -0.01, 1.55, -0.5), 0.01, material_mouth));
-    world.add(make_shared<sphere>(point3(translacao + 0, 1.55, -0.5), 0.01, material_mouth));
-    world.add(make_shared<sphere>(point3(translacao + 0.01, 1.55, -0.5), 0.01, material_mouth));
+    world.add(make_shared<sphere>(point3(-0.01, 1.55, -1.5), 0.01, material_mouth));
+    world.add(make_shared<sphere>(point3(0, 1.55, -1.5), 0.01, material_mouth));
+    world.add(make_shared<sphere>(point3(0.01, 1.55, -1.5), 0.01, material_mouth));
 
-    world.add(make_shared<sphere>(point3(translacao + 0.02, 1.56, -0.5), 0.01, material_mouth));
-    world.add(make_shared<sphere>(point3(translacao + 0.03, 1.56, -0.5), 0.01, material_mouth));
-    world.add(make_shared<sphere>(point3(translacao + 0.04, 1.57, -0.5), 0.01, material_mouth));
-    world.add(make_shared<sphere>(point3(translacao + 0.05, 1.57, -0.5), 0.01, material_mouth));
-    world.add(make_shared<sphere>(point3(translacao + 0.06, 1.58, -0.5), 0.01, material_mouth));
-    world.add(make_shared<sphere>(point3(translacao + 0.07, 1.58, -0.5), 0.01, material_mouth));
-    world.add(make_shared<sphere>(point3(translacao + 0.08, 1.59, -0.5), 0.01, material_mouth));
-    world.add(make_shared<sphere>(point3(translacao + 0.09, 1.59, -0.5), 0.01, material_mouth));
-    world.add(make_shared<sphere>(point3(translacao + 0.10, 1.60, -0.5), 0.01, material_mouth));
+    world.add(make_shared<sphere>(point3(0.02, 1.56, -1.5), 0.01, material_mouth));
+    world.add(make_shared<sphere>(point3(0.03, 1.56, -1.5), 0.01, material_mouth));
+    world.add(make_shared<sphere>(point3(0.04, 1.57, -1.5), 0.01, material_mouth));
+    world.add(make_shared<sphere>(point3(0.05, 1.57, -1.5), 0.01, material_mouth));
+    world.add(make_shared<sphere>(point3(0.06, 1.58, -1.5), 0.01, material_mouth));
+    world.add(make_shared<sphere>(point3(0.07, 1.58, -1.5), 0.01, material_mouth));
+    world.add(make_shared<sphere>(point3(0.08, 1.59, -1.5), 0.01, material_mouth));
+    world.add(make_shared<sphere>(point3(0.09, 1.59, -1.5), 0.01, material_mouth));
+    world.add(make_shared<sphere>(point3(0.10, 1.60, -1.5), 0.01, material_mouth));
+
+    world.add(make_shared<sphere>(point3(0.0, 1.3, -1.5), 0.03, material_buttons));
+    world.add(make_shared<sphere>(point3(0.0, 1.15, -1.5), 0.03, material_buttons));
+    world.add(make_shared<sphere>(point3(0.0, 1, -1.5), 0.03, material_buttons));
+
+    world.add(make_shared<sphere>(point3(-0.55, 1.4, -2.0), 0.15, material_shoulder));
+    world.add(make_shared<sphere>(point3(0.55, 1.4, -2.0), 0.15, material_shoulder));
+
+    world.add(make_shared<sphere>(point3(-0.75, 1.5, -2.0), 0.10, material_biceps));
+    world.add(make_shared<sphere>(point3(0.75, 1.5, -2.0), 0.10, material_biceps));
+
+    world.add(make_shared<sphere>(point3(-0.88, 1.55, -2.0), 0.08, material_arm));
+    world.add(make_shared<sphere>(point3(0.88, 1.55, -2.0), 0.08, material_arm));
+
+    srand(42);
+
+    for (int a = -3; a < 3; a++) {
+        for (int b = -3; b < 1; b++) {
+            auto choose_mat = random_double();
+            point3 center(deslocamento + a + 0.5*random_double(), 0, b - 0.5*random_double());
+
+            if ((center - point3(0, 0, -2)).length() > 1.2) {
+                shared_ptr<material> sphere_material;
+
+                if (choose_mat < 0.8) {
+                    // diffuse
+                    auto albedo = color::random() * color::random();
+                    sphere_material = make_shared<lambertian>(albedo);
+                    world.add(make_shared<sphere>(center, 0.2, sphere_material));
+                } else if (choose_mat < 0.95) {
+                    // metal
+                    auto albedo = color::random(0.5, 1);
+                    auto fuzz = random_double(0, 0.5);
+                    sphere_material = make_shared<metal>(albedo, fuzz);
+                    world.add(make_shared<sphere>(center, 0.2, sphere_material));
+                } else {
+                    // glass
+                    sphere_material = make_shared<dielectric>(1.5);
+                    world.add(make_shared<sphere>(center, 0.2, sphere_material));
+                }
+            }
+        }
+    }
 
 
-
-
-    world.add(make_shared<sphere>(point3(translacao + 0.0, 1.3, -0.5), 0.03, material_buttons));
-    world.add(make_shared<sphere>(point3(translacao + 0.0, 1.15, -0.5), 0.03, material_buttons));
-    world.add(make_shared<sphere>(point3(translacao + 0.0, 1, -0.5), 0.03, material_buttons));
-
-    world.add(make_shared<sphere>(point3(translacao + -0.55, 1.4, -1.0), 0.15, material_shoulder));
-    world.add(make_shared<sphere>(point3(translacao + 0.55, 1.4, -1.0), 0.15, material_shoulder));
-
-    world.add(make_shared<sphere>(point3(translacao + -0.75, 1.3, -1.0), 0.10, material_biceps));
-    world.add(make_shared<sphere>(point3(translacao + 0.75, 1.3, -1.0), 0.10, material_biceps));
-
-    world.add(make_shared<sphere>(point3(translacao + -0.88, 1.25, -1.0), 0.08, material_arm));
-    world.add(make_shared<sphere>(point3(translacao + 0.88, 1.25, -1.0), 0.08, material_arm));
-
-
-    cam.lookfrom = point3(2, 1, 1.18); // mover câmera +2 no eixo X
-    cam.lookat   = point3(1, 1, -1); // modificar visão da câmera, movendo +1 no eixo X
-    cam.vup      = vec3(0,1,3); // alterar vetor de direção up. Provocou rotação da câmera.
+    cam.lookfrom = point3(0, 1, 2); // aumento da distância da câmera ao objeto (aumento de Z)
+    cam.lookat   = point3(0, 1, -1); 
+    cam.vup      = vec3(2,1,0); // alterar vetor de direção up. Provocou rotação da câmera (+2 no eixo X)
 
     // Segunda renderização para "image2.ppm"
     cam.render(world, "image2.ppm");
