@@ -82,8 +82,8 @@ int main() {
         cam.lookfrom = point3(2 * cos(angle), 2, -2 + 2 * sin(angle));  // Posição da câmera
         cam.lookat = point3(0, 1, -2);  // ponto para o qual a câmera aponta
 
-        // Movimento do boneco (deslocando ao longo do eixo z)
-        double mov_head= 0.2 * t;  // Fator de desmontagem que aumenta com o tempo
+        // Movimento do boneco
+        double mov_head= 0.2 * t;
         double mov_upper_y = pow(t,2);
         double mov_upper_x = 0.5 * t;
         double mov_lower_x = 1.5 * t;
@@ -113,11 +113,9 @@ int main() {
         world.add(make_shared<sphere>(point3(-0.04, 1.67 + mov_head, -1.68), 0.01, material_mouth));
         world.add(make_shared<sphere>(point3(-0.03, 1.66 + mov_head, -1.68), 0.01, material_mouth));
         world.add(make_shared<sphere>(point3(-0.02, 1.66 + mov_head, -1.68), 0.01, material_mouth));
-        
         world.add(make_shared<sphere>(point3(-0.01, 1.65 + mov_head, -1.68), 0.01, material_mouth));
         world.add(make_shared<sphere>(point3(0, 1.65 + mov_head, -1.68), 0.01, material_mouth));
         world.add(make_shared<sphere>(point3(0.01, 1.65 + mov_head, -1.68), 0.01, material_mouth));
-
         world.add(make_shared<sphere>(point3(0.02, 1.66 + mov_head, -1.68), 0.01, material_mouth));
         world.add(make_shared<sphere>(point3(0.03, 1.66 + mov_head, -1.68), 0.01, material_mouth));
         world.add(make_shared<sphere>(point3(0.04, 1.67 + mov_head, -1.68), 0.01, material_mouth));
@@ -132,9 +130,6 @@ int main() {
         world.add(make_shared<sphere>(point3(0 + mov_upper_x, 1.3 - mov_upper_y, -1.50), 0.05, material_buttons));
         world.add(make_shared<sphere>(point3(0 + mov_upper_x, 1.15 - mov_upper_y, -1.5), 0.05, material_buttons)); 
         world.add(make_shared<sphere>(point3(0 + mov_upper_x, 1.0 - mov_upper_y, -1.5), 0.05, material_buttons)); 
-        
-
-
         world.add(make_shared<sphere>(point3(0 - mov_lower_x, 0.60, -1.38), 0.05, material_buttons));
         world.add(make_shared<sphere>(point3(0 - mov_lower_x, 0.45, -1.32), 0.05, material_buttons));
 
@@ -156,12 +151,12 @@ int main() {
             }
 
             // inserir flocos de neves de diferentes materiais
-            auto choose_mat = random_double();
-            if (choose_mat < 0.5) {
+            auto choose_mat = random_double(0, 1);
+            if (choose_mat < 0.3) {
                 auto material_snow = make_shared<lambertian>(color(1, 1, 1));
                 world.add(make_shared<sphere>(snowflake_position, 0.05, material_snow));
             }
-            else if (choose_mat < 0.8) {
+            else if (choose_mat < 0.7) {
                 auto material_snow = make_shared<metal>(color(1, 1, 1), 1.0);
                 world.add(make_shared<sphere>(snowflake_position, 0.05, material_snow));
             }
@@ -169,7 +164,6 @@ int main() {
                 auto material_snow = make_shared<dielectric>(1.50);
                 world.add(make_shared<sphere>(snowflake_position, 0.05, material_snow));
             }
-            // Adicionar o floco de neve à cena
             snow_positions[i] = snowflake_position;  // Atualizar posição
         }
 
