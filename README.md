@@ -16,5 +16,5 @@
 ```./pp2```
 
 
-**Anmação foi gerada utilizando o FFmpeg**
+**Animação foi gerada utilizando o FFmpeg**
 ```.ffmpeg -framerate 30 -i frame%d.ppm -vf "scale=1200:675" -c:v libx264 -pix_fmt yuv420p animation.mp4```
