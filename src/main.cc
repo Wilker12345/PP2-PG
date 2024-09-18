@@ -67,8 +67,8 @@ int main() {
 
     camera cam;
     cam.aspect_ratio = 16.0 / 9.0;
-    cam.image_width = 1200;
-    cam.samples_per_pixel = 500;
+    cam.image_width = 800; //800 //1200
+    cam.samples_per_pixel = 300; //500
     cam.max_depth = 50;
 
     int total_frames = 90;  // Número de frames na animação
@@ -144,6 +144,8 @@ int main() {
             // Simular movimento de queda
             point3 snowflake_position = snow_positions[i];
             snowflake_position[1] -= 0.1 * t;  // Movimento descendente
+            snow_positions[i] = snowflake_position;  // Atualizar posição
+
 
             // Reposicionar floco de neve se ele cair abaixo de uma certa altura
             if (snowflake_position.y() < -1.0) {
@@ -154,17 +156,16 @@ int main() {
             auto choose_mat = random_double(0, 1);
             if (choose_mat < 0.3) {
                 auto material_snow = make_shared<lambertian>(color(1, 1, 1));
-                world.add(make_shared<sphere>(snowflake_position, 0.05, material_snow));
+                world.add(make_shared<sphere>(snowflake_position, 0.04, material_snow));
             }
             else if (choose_mat < 0.7) {
                 auto material_snow = make_shared<metal>(color(1, 1, 1), 1.0);
-                world.add(make_shared<sphere>(snowflake_position, 0.05, material_snow));
+                world.add(make_shared<sphere>(snowflake_position, 0.04, material_snow));
             }
            else {
                 auto material_snow = make_shared<dielectric>(1.50);
-                world.add(make_shared<sphere>(snowflake_position, 0.05, material_snow));
+                world.add(make_shared<sphere>(snowflake_position, 0.04, material_snow));
             }
-            snow_positions[i] = snowflake_position;  // Atualizar posição
         }
 
         // Renderizar o frame
