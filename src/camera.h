@@ -26,7 +26,6 @@ class camera {
     double focus_dist = 10;    // Distance from camera lookfrom point to plane of perfect focus
 
     // Alterada função render para receber nome do arquivo de saída
-
     void render(const hittable& world, const std::string& filename) {
         initialize();
 
@@ -40,7 +39,7 @@ class camera {
         std::string full_path = output_directory + "/" + filename;
         std::ofstream outfile(full_path);
 
-        outfile << "P3\n" << image_width << ' ' << image_height << "\n255\n";  // Cabeçalho
+        outfile << "P3\n" << image_width << ' ' << image_height << "\n255\n";
 
         for (int j = 0; j < image_height; j++) {
             std::clog << "\rScanlines remaining: " << (image_height - j) << ' ' << std::flush;

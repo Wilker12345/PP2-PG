@@ -8,7 +8,6 @@
 #include <math.h>
 
 
-
 //verifica se o raio intersectou ou não a esfera
 double hit_sphere(const point3& center, double radius, const ray& r) {
     vec3 oc = center - r.origin();
