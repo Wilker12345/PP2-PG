@@ -2,7 +2,7 @@
 Projeto elaborado para a disciplina de Processamento Gráfico. 
 
 ### Arquivos:
-- **index.html:** arquivo html inclui um elemento <canvas> para renderização gráfica e links para bibliotecas JavaScript, como TWGL e utilitários WebGL.
+- **index.html:** arquivo html inclui um elemento canvas para renderização gráfica e links para bibliotecas JavaScript, como TWGL e utilitários WebGL.
 - **styles.css:** arquivo css de estilização da página.
 - **main.js:** arquivo javascript contendo a renderização da cena, com seus objetos, suas texturas e iluminação e a câmera.
 
