@@ -17,4 +17,4 @@ As imagens são armazenadas no diretório "imagens". E dentro desse diretório e
 
 
 A cena retrata um boneco de neve em meio a um ambiente nevado, enquanto a câmera realiza uma suave rotação ao redor dele. Com o desenrolar do vídeo, as esferas que compõem o boneco começam a se afastar lentamente, transmitindo a sensação de desmontagem gradual.
-O boneco é construído a partir de diferentes materiais: a esfera inferior é metálica, a do meio é feita de um material dielétrico, e a cabeça e os olhos também possuem uma superfície metálica. As esferas menores que formam a boca, o nariz e os botões são de material lambertiano, conferindo a elas uma aparência mais difusa e menos reflexiva.
+O boneco é construído a partir de diferentes materiais: a esfera inferior é metálica, a do meio é feita de um material dielétrico, e a cabeça e os olhos também possuem uma superfície metálica. As esferas menores que formam a boca, o nariz e os botões são de material lambertiano, conferindo a elas uma aparência menos reflexiva.
