@@ -31,5 +31,5 @@ O boneco é construído a partir de diferentes materiais: a esfera inferior é m
 **Também é possível renderizar apenas um intervalo de frames:**
 ```./pp2 0 10```
 
-Executar o seguinte comando, dentro diretório imagens, para gerar a animação:
+**Executar o seguinte comando, dentro diretório imagens, para gerar a animação:**
 ```ffmpeg -framerate 30 -start_number 0 -i "image%d.ppm" animation.mp4```

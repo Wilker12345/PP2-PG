@@ -7,6 +7,8 @@
 #include "sphere.h"
 #include <math.h>
 
+#define PI 3.14159265358979323846
+
 
 // Verifica se o raio intersectou ou não a esfera
 double hit_sphere(const point3& center, double radius, const ray& r) {
@@ -47,8 +49,8 @@ int main(int argc, char* argv[]) {
 
     camera cam;
     cam.aspect_ratio = 16.0 / 9.0;
-    cam.image_width = 800;
-    cam.samples_per_pixel = 300;
+    cam.image_width = 100;
+    cam.samples_per_pixel = 10;
     cam.max_depth = 50;
 
     int total_frames = 90;  // Número de frames na animação
@@ -66,7 +68,7 @@ int main(int argc, char* argv[]) {
         double t = double(frame) / total_frames;  // Fator de tempo
 
         // Movimento da câmera (girando ao redor do boneco)
-        double angle = 2 * M_PI * t + M_PI/4;
+        double angle = 2 * PI * t + PI/4;
         cam.lookfrom = point3(2 * cos(angle), 2, -2 + 2 * sin(angle));  // Posição da câmera
         cam.lookat = point3(0, 1, -2);  // ponto para o qual a câmera aponta
 

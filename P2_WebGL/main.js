@@ -502,7 +502,7 @@ async function main() {
       gl.bindVertexArray(vao);
       twgl.setUniforms(meshProgramInfo, { u_world: u_world1 }, material);
       twgl.drawBufferInfo(gl, bufferInfo);
-}
+    }
 
     const mesaY = Math.sin(time * 2) * 0.3; // movimentar mesa para cima e para baixo
     const scaleFactor = 0.014;
