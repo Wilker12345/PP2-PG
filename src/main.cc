@@ -1,22 +1,3 @@
-/*
-Para rodar o projeto, tive que instalar o CMake, colocar o caminho do compilador dos compiladores nas variáveis de ambiente,
-
-depois criei o arquivo CMakeLists.txt, escrevi cmake_minimum_required(VERSION 3.30.3) para dizer qual versão minima do cmake deveria rodar,
-
-project(projeto_pratico2) para dizer qual o nome do meu projeto e por fim adicionei add_executable(projeto_pratico2 pp2.cpp).
-
-Depois rodei os comandos cmake -B build -G "MingW Makefiles" para rodar os códigos do cmake usando o gerador de makefile do MingW
-
-Rodei o comando cmake --build build
-
-Por fim, executei o arquivo pp2.exe e mandei ele para a saida imagem.ppm com o comando ".\pp2.exe > image.ppm"
-
-Deu errado, comecei a rodar com cmake -B build e cmake --build build
-
-Também fiz .\build\projeto_pratico2.exe > image.ppm
-*/ 
-
-
 #include "rtweekend.h"
 
 #include "camera.h"
@@ -50,16 +31,16 @@ point3 random_snow_position() {
     return point3(x, y, z);
 }
 
-int main() {
+int main(int argc, char* argv[]) {
     hittable_list world;
     int num_snowflakes = 100;  // Número de flocos de neve
     std::vector<point3> snow_positions;
 
     // Materiais
-    auto material_ground = make_shared<metal>(color(1, 1, 1),1.0);
-    auto material_lower = make_shared<metal>(color(1.0, 1.0, 1.0), 1.0);
+    auto material_ground = make_shared<metal>(color(1, 1, 1), 0.8);
+    auto material_lower = make_shared<metal>(color(1.0, 1.0, 1.0), 0.0);
     auto material_upper = make_shared<dielectric>(1.5);
-    auto material_head = make_shared<metal>(color(1, 1, 1), 1);
+    auto material_head = make_shared<metal>(color(1, 1, 1), 0.5);
     auto material_eye = make_shared<metal>(color(0, 0, 0), 1.0);  // Olhos pretos
     auto material_nose = make_shared<lambertian>(color(1, 0.65, 0));  // Nariz laranja
     auto material_mouth = make_shared<lambertian>(color(0, 0, 0));  // Boca preta
@@ -67,13 +48,21 @@ int main() {
 
     camera cam;
     cam.aspect_ratio = 16.0 / 9.0;
-    cam.image_width = 800; //800 //1200
-    cam.samples_per_pixel = 300; //500
+    cam.image_width = 800;
+    cam.samples_per_pixel = 300;
     cam.max_depth = 50;
 
     int total_frames = 90;  // Número de frames na animação
 
-    for (int frame = 0; frame < total_frames; frame++) {
+    int frame_inicial = 0;
+    int frame_final = total_frames;
+
+    if (argc == 3) {
+        frame_inicial = std::atoi(argv[1]);
+        frame_final = std::atoi(argv[2]);
+    }
+
+    for (int frame = frame_inicial; frame < frame_final; frame++) {
         world.clear();
         double t = double(frame) / total_frames;  // Fator de tempo
 
@@ -82,15 +71,25 @@ int main() {
         cam.lookfrom = point3(2 * cos(angle), 2, -2 + 2 * sin(angle));  // Posição da câmera
         cam.lookat = point3(0, 1, -2);  // ponto para o qual a câmera aponta
 
-        // Movimento do boneco
+        // Movimentos do boneco
+        ////////////////////////////////////////////////////////////////////////
         double mov_head= 0.2 * t;
+
+        // Parte do meio do boneco realiza movimentos nos eixos X e Y
         double mov_upper_y = pow(t,2);
         double mov_upper_x = 0.5 * t;
+
         double mov_lower_x = 1.5 * t;
+
+        // Limitar velocidade do movimento da parte inferior
+        if(mov_lower_x > 4) {
+            mov_lower_x = 4;
+        }
 
         if(mov_lower_x > 4) {
             mov_lower_x = 4;
         }
+        ////////////////////////////////////////////////////////////////////////
 
         // Corpo do boneco (esferas)
         world.add(make_shared<sphere>(point3(0.0, -100.5, -2.0), 100.0, material_ground)); //esfera que representa mundo
@@ -98,12 +97,12 @@ int main() {
         world.add(make_shared<sphere>(point3(0 + mov_upper_x, 1.1 - mov_upper_y, -2),   0.5, material_upper)); //meio do boneco
         world.add(make_shared<sphere>(point3(0.0, 1.85 + mov_head, -2.0),   0.35, material_head));//cabeça do boneco
 
-        // olhos e naris do boneco
+        // Olhos e nariz do boneco
         world.add(make_shared<sphere>(point3(-0.1, 1.90 + mov_head, -1.68), 0.05, material_eye));
         world.add(make_shared<sphere>(point3(0.1, 1.90 + mov_head, -1.68), 0.05, material_eye));
         world.add(make_shared<sphere>(point3(0.0, 1.80 + mov_head, -1.68), 0.05, material_nose));
 
-        // boca
+        // Boca
         world.add(make_shared<sphere>(point3(-0.10, 1.70 + mov_head, -1.68), 0.01, material_mouth));
         world.add(make_shared<sphere>(point3(-0.09, 1.69 + mov_head, -1.68), 0.01, material_mouth));
         world.add(make_shared<sphere>(point3(-0.08, 1.69 + mov_head, -1.68), 0.01, material_mouth));
@@ -143,7 +142,7 @@ int main() {
         for (int i = 0; i < num_snowflakes; i++) {
             // Simular movimento de queda
             point3 snowflake_position = snow_positions[i];
-            snowflake_position[1] -= 0.1 * t;  // Movimento descendente
+            snowflake_position[1] -= 0.1 * t;  // Movimento de queda
             snow_positions[i] = snowflake_position;  // Atualizar posição
 
 
@@ -152,7 +151,7 @@ int main() {
                 snowflake_position = random_snow_position();
             }
 
-            // inserir flocos de neves de diferentes materiais
+            // Inserir flocos de neves de diferentes materiais
             auto choose_mat = random_double(0, 1);
             if (choose_mat < 0.3) {
                 auto material_snow = make_shared<lambertian>(color(1, 1, 1));
@@ -169,7 +168,7 @@ int main() {
         }
 
         // Renderizar o frame
-        cam.render(world, "frame" + std::to_string(frame) + ".ppm");
+        cam.render(world, "image" + std::to_string(frame) + ".ppm");
     }
 
 }
