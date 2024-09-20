@@ -32,4 +32,4 @@ O boneco é construído a partir de diferentes materiais: a esfera inferior é m
 ```./pp2 0 10```
 
 **Executar o seguinte comando, dentro diretório imagens, para gerar a animação:**
-```ffmpeg -framerate 30 -start_number 0 -i "image%d.ppm" animation.mp4```
+```ffmpeg -framerate 30 -start_number 0 -i "image%d.png" -c:v libx264 -pix_fmt yuv420p animation.mp4```

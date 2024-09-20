@@ -292,11 +292,11 @@ async function main() {
   }
   `;
 
-  // Cria informações do programa de malha a partir dos shaders
   const meshProgramInfo = twgl.createProgramInfo(gl, [vs, fs]);
 
   // Carregar o modelo do olho
-  // Olho já apresenta iluminação
+  // O arquivo .mtl contém as informações das propriedades de refletividade do .obj. O comportamento real da luz (reflexão, sombras, etc.) 
+  // é determinado pelo mecanismo de renderização (vertex shader, fragment shader)
   const objHref_olho = 'objetos/olho/olho.obj';  
   const response_olho = await fetch(objHref_olho);
   const text_olho = await response_olho.text();
@@ -382,6 +382,7 @@ async function main() {
       .forEach(([key, filename]) => {
         let texture = textures[filename];
         if (!texture) {
+          // Carrega duas texturas diferentes para a mesa
           const textureHref = 'objetos/mesa/text/mesa.jpg';
           const textureHref2 = 'objetos/mesa/text/mesa2.jpg';
           texture = twgl.createTexture(gl, {src: (textureHref, textureHref2), flipY: true});
@@ -447,15 +448,17 @@ async function main() {
   const range_mesa = m4.subtractVectors(extents_mesa.max, extents_mesa.min);
 
   const objOffset_olho = m4.scaleVector(m4.addVectors(extents_olho.min, m4.scaleVector(range_olho, 0.5)), -1);
-  // alterar posição Y do olho
+  // Alterar posição Y do olho
   objOffset_olho[1] += 3;
   
   const objOffset_mesa = m4.scaleVector(m4.addVectors(extents_mesa.min, m4.scaleVector(range_mesa, 0.5)), 1);
   // alterar posição Y da mesa
   objOffset_mesa[1] += -1;
 
+  // Define o alvo da câmera para focar na cena
   const cameraTarget = [0, 1.5, 0];
 
+  // Define o raio para a câmera a partir do tamanho do olho
   const radius = m4.length(range_olho) * 1.2;
 
   // inclinação da câmera no eixo Y.
@@ -474,12 +477,17 @@ async function main() {
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
     gl.enable(gl.DEPTH_TEST);
 
+
     const fieldOfViewRadians = degToRad(120);
+
+    // ajustar cena resolução da tela
     const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
     const projection = m4.perspective(fieldOfViewRadians, aspect, zNear, zFar);
     
 
     const up = [0, 1, 0];
+    // Cria a matriz de transformaçào usando a posição da câmera, o alvo da câmera e o vetor "cima" 
+    // cena é visualizada a partir da posição da câmera.
     const camera = m4.lookAt(cameraPosition, cameraTarget, up);
     const view = m4.inverse(camera);
 
@@ -505,11 +513,14 @@ async function main() {
     }
 
     const mesaY = Math.sin(time * 2) * 0.3; // movimentar mesa para cima e para baixo
+
+    // Mesa é um objeto muito maior que o olho. Dessa forma, foi preciso aplicar uma transformação
+    // de escala. Assim, cada coordenada foi multiplicada pelo fator de escala aqui especificado.
     const scaleFactor = 0.014;
     const rotationAngle = Math.PI/2 // rotacionar mesa em 90 graus
 
 
-    // aplicar a translação antes da rotação. A rotação será aplicada em torno do eixo local do objeto
+    // objeto é transladado no eixo Y. Depois, é rotacionado em 90 graus
     let u_world2 = m4.translate(m4.identity(), objOffset_mesa[0], objOffset_mesa[1] + mesaY, objOffset_mesa[2]);
     u_world2 = m4.yRotate(u_world2, rotationAngle);
     u_world2 = m4.scale(u_world2, scaleFactor, scaleFactor, scaleFactor); // Aplica escala à mesa
