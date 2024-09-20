@@ -8,7 +8,7 @@
 #include <math.h>
 
 
-//verifica se o raio intersectou ou não a esfera
+// Verifica se o raio intersectou ou não a esfera
 double hit_sphere(const point3& center, double radius, const ray& r) {
     vec3 oc = center - r.origin();
     auto a = r.direction().length_squared();
@@ -36,7 +36,7 @@ int main(int argc, char* argv[]) {
     std::vector<point3> snow_positions;
 
     // Materiais
-    auto material_ground = make_shared<metal>(color(1, 1, 1), 0.8);
+    auto material_ground = make_shared<metal>(color(1, 1, 1), 0.8); // Mundo metálico, com reflexos difusos
     auto material_lower = make_shared<metal>(color(1.0, 1.0, 1.0), 0.0);
     auto material_upper = make_shared<dielectric>(1.5);
     auto material_head = make_shared<metal>(color(1, 1, 1), 0.5);
