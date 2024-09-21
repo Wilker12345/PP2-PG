@@ -6,7 +6,7 @@ Projeto elaborado para a disciplina de Processamento Gráfico.
 - **src:** contém os arquivos do projeto.
 
 ## Mudanças no código base:
-- **camera.h:** adaptação da função render para receber o nome do arquivo de saída
+- **camera.h:** adaptação da função render para receber o nome do arquivo de saída.
 - **main.cc:** código para gerar os objetos e cenas aqui descritas.
 
 ## Objetos
@@ -27,11 +27,11 @@ A câmera olha para a posição (0, 1, -2). Comparando com o boneco, a câmera e
   - Base do boneco: posição inicial (0, 0, -2), com raio = 0.8;
   - Parte superior do boneco: posição inicial (0, 1.1, -2), com raio = 0.5;
   - Base do boneco: posição inicial (0, 1.85, -2), com raio = 0.35;
-  - olho do boneco: posição inicial (-0.1, 1.90, -1,68), com raio - 0.05 - um pouco à frente do corpo do boneco;
-  - olho do boneco: posição inicial (0.1, 1.90, -1.68), com raio = 0.05 - um pouco à frente do corpo do boneco;
-  - nariz do boneco: posição inicial (0.0, 1.80, -1.68), com raio = 0.05 - um pouco à frente do corpo do boneco;
-  - boca do boneco: 20 esferas de raio 0.01, com a posição central sendo (0, 1.65, -1.68);
-  - botões do boneco: 5 esferas de raio 0.05, com a primeira na posição inicial (0, 1.3, -1.5);
+  - Olho do boneco: posição inicial (-0.1, 1.90, -1,68), com raio - 0.05 - um pouco à frente do corpo do boneco;
+  - Olho do boneco: posição inicial (0.1, 1.90, -1.68), com raio = 0.05 - um pouco à frente do corpo do boneco;
+  - Nariz do boneco: posição inicial (0.0, 1.80, -1.68), com raio = 0.05 - um pouco à frente do corpo do boneco;
+  - Boca do boneco: 20 esferas de raio 0.01, com a posição central sendo (0, 1.65, -1.68);
+  - Botões do boneco: 5 esferas de raio 0.05, com a primeira na posição inicial (0, 1.3, -1.5);
 
 - ### Flocos de neve:
   - 100 flocos de neve, com raio = 0.04, gerados em posições aleatórias no seguinte espaço. Foi aplicado um movimento de queda para cada um desses flocos.
