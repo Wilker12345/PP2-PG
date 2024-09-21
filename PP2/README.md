@@ -30,8 +30,8 @@ A câmera olha para a posição (0, 1, -2). Comparando com o boneco, a câmera e
   - olho do boneco: posição inicial (-0.1, 1.90, -1,68), com raio - 0.05 - um pouco à frente do corpo do boneco;
   - olho do boneco: posição inicial (0.1, 1.90, -1.68), com raio = 0.05 - um pouco à frente do corpo do boneco;
   - nariz do boneco: posição inicial (0.0, 1.80, -1.68), com raio = 0.05 - um pouco à frente do corpo do boneco;
-  - boca do boneco: 20 esferas de raio 0.01, com a posição central sendo (0, 1.65, -1,68);
-  - botões do boneco: 5 esferas de raio 0.05, com a primeira na posição inicial (0, 1.3, -1,5);
+  - boca do boneco: 20 esferas de raio 0.01, com a posição central sendo (0, 1.65, -1.68);
+  - botões do boneco: 5 esferas de raio 0.05, com a primeira na posição inicial (0, 1.3, -1.5);
 
 - ### Flocos de neve:
   - 100 flocos de neve, com raio = 0.04, gerados em posições aleatórias no seguinte espaço. Foi aplicado um movimento de queda para cada um desses flocos.
